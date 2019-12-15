@@ -2,10 +2,7 @@ import unittest
 from datetime import datetime
 
 from financial_accounting.main.accounts import Account
-from financial_accounting.main.entry import Entry
-
-accountName: str = 'assetName'
-account: Account = Account(name=accountName)
+from financial_accounting.main.entries import Entry
 
 key: str = 'key'
 
@@ -15,7 +12,7 @@ value: float = 3.14
 
 date: datetime = datetime.now()
 
-entry: Entry = Entry(account=account, key=key, value=value, date=date)
+entry: Entry = Entry(account=Account, key=key, value=value, date=date)
 
 
 class TestEntry(unittest.TestCase):
@@ -23,7 +20,7 @@ class TestEntry(unittest.TestCase):
     def testItCanGetAccount(self):
         self.assertEqual(
             entry.getAccount(),
-            account)
+            Account)
 
     def testItCanGetDate(self):
         self.assertEqual(
@@ -49,7 +46,7 @@ class TestEntry(unittest.TestCase):
         self.assertRaises(
             ValueError,
             Entry,
-            account=account,
+            account=Account,
             key=key,
             value=value * -1,
             date=date)

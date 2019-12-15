@@ -1,25 +1,33 @@
+class AccountType:
+    account: str = 'Account'
+    asset: str = 'Asset'
+    liability: str = 'Liability'
+    equity: str = 'Equity'
+
+
 class Account:
-    def __init__(self,
-                 name: str):
-        self.__name = name
+    @staticmethod
+    def getType() -> str:
+        return AccountType.account
 
-    def getName(self) -> str:
-        return self.__name
-
-    def getType(self) -> str:
-        return self.__class__.__name__
+    @classmethod
+    def getName(cls) -> str:
+        return cls.__name__
 
 
 class Asset(Account):
-    def __init__(self, name: str):
-        super().__init__(name)
+    @staticmethod
+    def getType() -> str:
+        return AccountType.asset
 
 
 class Liability(Account):
-    def __init__(self, name: str):
-        super().__init__(name)
+    @staticmethod
+    def getType() -> str:
+        return AccountType.liability
 
 
 class Equity(Account):
-    def __init__(self, name: str):
-        super().__init__(name)
+    @staticmethod
+    def getType() -> str:
+        return AccountType.equity
