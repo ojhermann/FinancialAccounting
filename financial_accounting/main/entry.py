@@ -36,12 +36,11 @@ def setValue(value: float):
     return value
 
 
-if __name__ == '__main__':
-    entry = Entry(key='testEntry',
-                  value=3.14)
+class Debit(Entry):
+    def __init__(self, account: Account, key: str, value: float):
+        super().__init__(account, key, value)
 
-    print(entry.getDate())
 
-    print(entry.getKey())
-
-    print(entry.getValue())
+class Credit(Entry):
+    def __init__(self, account: Account, key: str, value: float):
+        super().__init__(account, key, value)
