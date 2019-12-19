@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Type
-from financial_accounting.main.accounts import Account
+from financial_accounting.main.accounts.account import Account
 
 
 class Entry:
@@ -9,7 +9,7 @@ class Entry:
                  key: str,
                  value: float,
                  date: datetime = datetime.now()):
-        self.__account: Type[account] = account
+        self.__account: Type[Account] = account
         self.__key: str = key
         self.__value: float = setValue(value)
         self.__date: datetime = date
@@ -38,10 +38,10 @@ def setValue(value: float):
 
 
 class Debit(Entry):
-    def __init__(self, account: Type[Account], key: str, value: float):
-        super().__init__(account, key, value)
+    def __init__(self, account: Type[Account], key: str, value: float, date: datetime = datetime.now()):
+        super().__init__(account, key, value, date)
 
 
 class Credit(Entry):
-    def __init__(self, account: Type[Account], key: str, value: float):
-        super().__init__(account, key, value)
+    def __init__(self, account: Type[Account], key: str, value: float, date: datetime = datetime.now()):
+        super().__init__(account, key, value, date)
