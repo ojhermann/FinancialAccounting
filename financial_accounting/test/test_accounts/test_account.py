@@ -6,7 +6,7 @@ class TestAccounts(unittest.TestCase):
     def testAccountWorks(self):
         self.assertEqual(
             object.__name__,
-            Account.getAccountType())
+            Account.getType())
 
         self.assertEqual(
             Account.__name__,
@@ -15,7 +15,7 @@ class TestAccounts(unittest.TestCase):
     def testAssetWorks(self):
         self.assertEqual(
             Account.__name__,
-            Asset.getAccountType())
+            Asset.getType())
 
         self.assertEqual(
             Asset.__name__,
@@ -26,7 +26,7 @@ class TestAccounts(unittest.TestCase):
 
         self.assertEqual(
             Asset.__name__,
-            AccountsReceivable.getAccountType())
+            AccountsReceivable.getType())
 
         self.assertEqual(
             AccountsReceivable.__name__,
@@ -35,7 +35,7 @@ class TestAccounts(unittest.TestCase):
     def testLiabilityWorks(self):
         self.assertEqual(
             Account.__name__,
-            Liability.getAccountType())
+            Liability.getType())
 
         self.assertEqual(
             Liability.__name__,
@@ -46,7 +46,7 @@ class TestAccounts(unittest.TestCase):
 
         self.assertEqual(
             Liability.__name__,
-            AccountsPayable.getAccountType())
+            AccountsPayable.getType())
 
         self.assertEqual(
             AccountsPayable.__name__,
@@ -55,7 +55,7 @@ class TestAccounts(unittest.TestCase):
     def testEquityWorks(self):
         self.assertEqual(
             Account.__name__,
-            Equity.getAccountType())
+            Equity.getType())
 
         self.assertEqual(
             Equity.__name__,
@@ -66,7 +66,7 @@ class TestAccounts(unittest.TestCase):
 
         self.assertEqual(
             Equity.__name__,
-            RetainedEarnings.getAccountType())
+            RetainedEarnings.getType())
 
         self.assertEqual(
             RetainedEarnings.__name__,

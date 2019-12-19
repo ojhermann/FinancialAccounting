@@ -1,6 +1,6 @@
 class Account:
     @classmethod
-    def getAccountType(cls) -> str:
+    def getType(cls) -> str:
         return cls.__base__.__name__
 
     @classmethod
