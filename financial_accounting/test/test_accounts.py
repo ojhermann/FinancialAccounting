@@ -1,5 +1,5 @@
 import unittest
-from financial_accounting.main.accounts import AccountType, Account, Asset, Liability, Equity
+from financial_accounting.main.account import AccountType, Account, Asset, Liability, Equity
 
 
 class TestAccounts(unittest.TestCase):

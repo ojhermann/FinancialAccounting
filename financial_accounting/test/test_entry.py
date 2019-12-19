@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from financial_accounting.main.accounts import Account
+from financial_accounting.main.account import Account
 from financial_accounting.main.entries import Entry
 
 key: str = 'key'

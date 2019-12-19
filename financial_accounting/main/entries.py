@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Type
-from financial_accounting.main.accounts import Account
+from financial_accounting.main.account import Account
 
 
 class Entry:
