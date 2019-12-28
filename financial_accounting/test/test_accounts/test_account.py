@@ -3,74 +3,65 @@ from financial_accounting.main.accounts.account import Account, Asset, Liability
 
 
 class TestAccounts(unittest.TestCase):
-    def testAccountWorks(self):
-        self.assertEqual(
-            object.__name__,
-            Account.getType())
-
-        self.assertEqual(
-            Account.__name__,
-            Account.getAccount())
-
     def testAssetWorks(self):
         self.assertEqual(
             Account.__name__,
-            Asset.getType())
+            Asset.getAccountType())
 
         self.assertEqual(
             Asset.__name__,
-            Asset.getAccount())
+            Asset.getAccountName())
 
         class AccountsReceivable(Asset):
             pass
 
         self.assertEqual(
             Asset.__name__,
-            AccountsReceivable.getType())
+            AccountsReceivable.getAccountType())
 
         self.assertEqual(
             AccountsReceivable.__name__,
-            AccountsReceivable.getAccount())
+            AccountsReceivable.getAccountName())
 
     def testLiabilityWorks(self):
         self.assertEqual(
             Account.__name__,
-            Liability.getType())
+            Liability.getAccountType())
 
         self.assertEqual(
             Liability.__name__,
-            Liability.getAccount())
+            Liability.getAccountName())
 
         class AccountsPayable(Liability):
             pass
 
         self.assertEqual(
             Liability.__name__,
-            AccountsPayable.getType())
+            AccountsPayable.getAccountType())
 
         self.assertEqual(
             AccountsPayable.__name__,
-            AccountsPayable.getAccount())
+            AccountsPayable.getAccountName())
 
     def testEquityWorks(self):
         self.assertEqual(
             Account.__name__,
-            Equity.getType())
+            Equity.getAccountType())
 
         self.assertEqual(
             Equity.__name__,
-            Equity.getAccount())
+            Equity.getAccountName())
 
         class RetainedEarnings(Equity):
             pass
 
         self.assertEqual(
             Equity.__name__,
-            RetainedEarnings.getType())
+            RetainedEarnings.getAccountType())
 
         self.assertEqual(
             RetainedEarnings.__name__,
-            RetainedEarnings.getAccount())
+            RetainedEarnings.getAccountName())
 
 
 if __name__ == '__main__':

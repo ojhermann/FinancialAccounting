@@ -1,10 +1,10 @@
 class Account:
     @classmethod
-    def getType(cls) -> str:
+    def getAccountType(cls) -> str:
         return cls.__base__.__name__
 
     @classmethod
-    def getAccount(cls) -> str:
+    def getAccountName(cls) -> str:
         return cls.__name__
 
 
