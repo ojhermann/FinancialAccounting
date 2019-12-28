@@ -3,15 +3,6 @@ from financial_accounting.main.accounts.account import Account, Asset, Liability
 
 
 class TestAccounts(unittest.TestCase):
-    def testAccountWorks(self):
-        self.assertEqual(
-            object.__name__,
-            Account.getAccountType())
-
-        self.assertEqual(
-            Account.__name__,
-            Account.getAccountName())
-
     def testAssetWorks(self):
         self.assertEqual(
             Account.__name__,
