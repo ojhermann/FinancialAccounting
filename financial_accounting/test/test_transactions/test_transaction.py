@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from typing import List, Union
 
 from financial_accounting.main.accounts.account import Asset, Liability
 from financial_accounting.main.entries.entry import Debit, Credit
@@ -31,36 +32,45 @@ transactionBalanced.add(creditOne)
 
 class TestUnbalancedTransaction(unittest.TestCase):
     def testItCanGetCredits(self):
-        self.assertEqual(1,
-                         len(transactionUnbalanced.getCredits()))
+        expectedEntries: List[Credit] = [creditOne]
 
-        self.assertIn(creditOne,
-                      transactionUnbalanced.getCredits().values())
+        actualEntries: List[Credit] = list(transactionUnbalanced.getCredits().values())
+
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
+
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanGetCreditBalance(self):
         self.assertEqual(valueCreditOne,
                          transactionUnbalanced.getCreditBalance())
 
     def testItCanGetDebits(self):
-        self.assertEqual(1,
-                         len(transactionUnbalanced.getDebits()))
+        expectedEntries: List[Debit] = [debitOne]
 
-        self.assertIn(debitOne,
-                      transactionUnbalanced.getDebits().values())
+        actualEntries: List[Debit] = list(transactionUnbalanced.getDebits().values())
+
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
+
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanGetDebitBalance(self):
         self.assertEqual(valueDebitOne,
                          transactionUnbalanced.getDebitBalance())
 
     def testItCanGetEntries(self):
-        self.assertEqual(2,
-                         len(transactionUnbalanced.getEntries()))
+        expectedEntries: List[Union[Credit, Debit]] = [creditOne, debitOne]
 
-        self.assertIn(creditOne,
-                      transactionUnbalanced.getEntries().values())
+        actualEntries: List[Union[Credit, Debit]] = list(transactionUnbalanced.getEntries().values())
 
-        self.assertIn(debitOne,
-                      transactionUnbalanced.getEntries().values())
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
+
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanCheckBalance(self):
         self.assertEqual(False,
@@ -69,42 +79,45 @@ class TestUnbalancedTransaction(unittest.TestCase):
 
 class TestBalancedTransaction(unittest.TestCase):
     def testItCanGetCredits(self):
-        self.assertEqual(1,
-                         len(transactionBalanced.getCredits()))
+        expectedEntries: List[Credit] = [creditOne]
 
-        self.assertIn(creditOne,
-                      transactionBalanced.getCredits().values())
+        actualEntries: List[Credit] = list(transactionBalanced.getCredits().values())
+
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
+
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanGetCreditBalance(self):
         self.assertEqual(valueCreditOne,
                          transactionBalanced.getCreditBalance())
 
     def testItCanGetDebits(self):
-        self.assertEqual(2,
-                         len(transactionBalanced.getDebits()))
+        expectedEntries: List[Debit] = [debitOne, debitTwo]
 
-        self.assertIn(debitOne,
-                      transactionBalanced.getDebits().values())
+        actualEntries: List[Debit] = list(transactionBalanced.getDebits().values())
 
-        self.assertIn(debitTwo,
-                      transactionBalanced.getDebits().values())
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
+
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanGetDebitBalance(self):
         self.assertEqual(valueDebitOne + valueDebitTwo,
                          transactionBalanced.getDebitBalance())
 
     def testItCanGetEntries(self):
-        self.assertEqual(3,
-                         len(transactionBalanced.getEntries()))
+        expectedEntries: List[Union[Credit, Debit]] = [creditOne, debitOne, debitTwo]
 
-        self.assertIn(creditOne,
-                      transactionBalanced.getEntries().values())
+        actualEntries: List[Union[Credit, Debit]] = list(transactionBalanced.getEntries().values())
 
-        self.assertIn(debitOne,
-                      transactionBalanced.getEntries().values())
+        self.assertEqual(len(expectedEntries),
+                         len(actualEntries))
 
-        self.assertIn(debitTwo,
-                      transactionBalanced.getEntries().values())
+        for entry in expectedEntries:
+            self.assert_(actualEntries.__contains__(entry))
 
     def testItCanCheckBalance(self):
         self.assertEqual(True,
