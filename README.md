@@ -24,4 +24,8 @@ Financial Accounting with Python
    - `values`: a positive `float` value representing the magnitude of the `Entry`
    - `date`: a `datetime` object
      - defaults to `datetime.now()` 
- 
+
+## transactions
+- contains a class used to represent transactions
+- `createTransactionKey` is a method used to generate unique keys for entries in a transaction
+- `Transaction` is the class representing a transaction
