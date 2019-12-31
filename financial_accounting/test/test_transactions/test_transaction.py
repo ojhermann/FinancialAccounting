@@ -1,10 +1,11 @@
 import unittest
+from collections import OrderedDict
 from datetime import datetime
-from typing import List, Union
+from typing import OrderedDict as OrderedDictType
 
 from financial_accounting.main.accounts.account import Asset, Liability
 from financial_accounting.main.entries.entry import Debit, Credit
-from financial_accounting.main.transactions.transaction import Transaction
+from financial_accounting.main.transactions.transaction import Transaction, createTransactionKey, acceptableTypes
 
 date: datetime = datetime.now()
 
@@ -20,119 +21,64 @@ keyCreditOne: str = 'keyCreditOne'
 valueCreditOne: float = valueDebitOne + valueDebitTwo
 creditOne: Credit = Credit(account=Liability, key=keyCreditOne, value=valueCreditOne, date=date)
 
-transactionUnbalanced: Transaction = Transaction()
-transactionUnbalanced.add(debitOne)
-transactionUnbalanced.add(creditOne)
 
-transactionBalanced: Transaction = Transaction()
-transactionBalanced.add(debitOne)
-transactionBalanced.add(debitTwo)
-transactionBalanced.add(creditOne)
+class TestCreateKey(unittest.TestCase):
+    def testItCanCreateTransactionKey(self):
+        expectedTransactionKey: str = debitOne.getType() + debitOne.getKey()
 
-
-class TestUnbalancedTransaction(unittest.TestCase):
-    def testItCanGetCredits(self):
-        expectedEntries: List[Credit] = [creditOne]
-
-        actualEntries: List[Credit] = list(transactionUnbalanced.getCredits().values())
-
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
-
-    def testItCanGetCreditBalance(self):
-        self.assertEqual(valueCreditOne,
-                         transactionUnbalanced.getCreditBalance())
-
-    def testItCanGetDebits(self):
-        expectedEntries: List[Debit] = [debitOne]
-
-        actualEntries: List[Debit] = list(transactionUnbalanced.getDebits().values())
-
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
-
-    def testItCanGetDebitBalance(self):
-        self.assertEqual(valueDebitOne,
-                         transactionUnbalanced.getDebitBalance())
-
-    def testItCanGetEntries(self):
-        expectedEntries: List[Union[Credit, Debit]] = [creditOne, debitOne]
-
-        actualEntries: List[Union[Credit, Debit]] = list(transactionUnbalanced.getEntries().values())
-
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
-
-    def testItCanCheckBalance(self):
-        self.assertEqual(False,
-                         transactionUnbalanced.isBalanced())
+        self.assertEqual(expectedTransactionKey,
+                         createTransactionKey(debitOne))
 
 
-class TestBalancedTransaction(unittest.TestCase):
-    def testItCanGetCredits(self):
-        expectedEntries: List[Credit] = [creditOne]
+class TestTransaction(unittest.TestCase):
+    def testItCanAddAndGet(self):
+        transaction: Transaction = Transaction()
+        transaction.add(debitOne)
+        transaction.add(creditOne)
+        transaction.add(debitTwo)
 
-        actualEntries: List[Credit] = list(transactionBalanced.getCredits().values())
+        expectedEntries: OrderedDictType[str, acceptableTypes] = OrderedDict(
+            {createTransactionKey(entry): entry for entry in [debitOne, creditOne, debitTwo]})
+        self.assertEqual(expectedEntries,
+                         transaction.getEntries())
 
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
-
-    def testItCanGetCreditBalance(self):
-        self.assertEqual(valueCreditOne,
-                         transactionBalanced.getCreditBalance())
-
-    def testItCanGetDebits(self):
-        expectedEntries: List[Debit] = [debitOne, debitTwo]
-
-        actualEntries: List[Debit] = list(transactionBalanced.getDebits().values())
-
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
-
-    def testItCanGetDebitBalance(self):
+        expectedDebits: OrderedDictType[str, Debit] = OrderedDict(
+            {createTransactionKey(entry): entry for entry in [debitOne, debitTwo]})
+        self.assertEqual(expectedDebits,
+                         transaction.getDebits())
         self.assertEqual(valueDebitOne + valueDebitTwo,
-                         transactionBalanced.getDebitBalance())
+                         transaction.getDebitBalance())
 
-    def testItCanGetEntries(self):
-        expectedEntries: List[Union[Credit, Debit]] = [creditOne, debitOne, debitTwo]
-
-        actualEntries: List[Union[Credit, Debit]] = list(transactionBalanced.getEntries().values())
-
-        self.assertEqual(len(expectedEntries),
-                         len(actualEntries))
-
-        for entry in expectedEntries:
-            self.assert_(actualEntries.__contains__(entry))
+        expectedCredits: OrderedDictType[str, Credit] = OrderedDict(
+            {createTransactionKey(entry): entry for entry in [creditOne]})
+        self.assertEqual(expectedCredits,
+                         transaction.getCredits())
+        self.assertEqual(valueCreditOne,
+                         transaction.getCreditBalance())
 
     def testItCanCheckBalance(self):
+        transaction: Transaction = Transaction()
+        transaction.add(debitOne)
+        transaction.add(creditOne)
+
+        self.assertEqual(False,
+                         transaction.isBalanced())
+
+        transaction.add(debitTwo)
+
         self.assertEqual(True,
-                         transactionBalanced.isBalanced())
+                         transaction.isBalanced())
 
+    def testItCanRaiseErrors(self):
+        transaction: Transaction = Transaction()
+        transaction.add(debitOne)
 
-class TestAddMethodErrors(unittest.TestCase):
-    def testItCanRaiseTypeError(self):
         self.assertRaises(TypeError,
-                          transactionBalanced.add,
+                          transaction.add,
                           'notTheCorrectType')
 
-    def testItCanRaiseValueError(self):
         self.assertRaises(ValueError,
-                          transactionBalanced.add,
+                          transaction.add,
                           debitOne)
 
 
