@@ -1,57 +1,57 @@
-from collections import OrderedDict
-from typing import Union, Type
-from typing import OrderedDict as OrderedDictType
-from financial_accounting.main.entries.entry import Entry, Debit, Credit
+from bisect import bisect_right
+from typing import List, Union
 
-acceptableTypes: Union = Union[Credit, Debit]
-
-
-def createTransactionKey(entry: Entry) -> str:
-    return entry.getType() + entry.getKey()
+from financial_accounting.main.entries.entry import Credit, Debit
 
 
 class Transaction:
-    def __init__(self):
-        self.__entries: OrderedDictType[str, acceptableTypes] = OrderedDict()
+    def __init__(self,
+                 identifier: str):
+        self.__identifier: str = identifier
+        self.__credits: List[Credit] = list()
+        self.__debits: List[Debit] = list()
 
-    def __getEntries(self,
-                     entryType: Type[Entry]) -> OrderedDictType[str, acceptableTypes]:
-        return OrderedDict(
-            {entryKey: entry for (entryKey, entry) in self.__entries.items() if type(entry) == entryType})
+    def __repr__(self) -> str:
+        return f'{self.get_identifier()}\n{self.get_debits()}\n{self.get_credits()}'
 
-    def __getBalance(self,
-                     entryType: Type[Entry]):
-        return sum([entry.getValue() for entry in self.__getEntries(entryType).values()])
+    def __add(self,
+              entry: Union[Debit, Credit],
+              entries: List[Union[Debit, Credit]]) -> None:
+        if not entries:
+            entries.append(entry)
+        else:
+            insert_index: int = bisect_right(entries, entry)
+            if entries[insert_index - 1] == entry:
+                raise ValueError(f'{entry} is already recorded in {self.get_identifier()}')
+            else:
+                entries.insert(insert_index, entry)
 
     def add(self,
-            entry: acceptableTypes) -> None:
-        if type(entry) not in acceptableTypes.__args__:
-            raise TypeError('Only Debits and Credits can be added to a TransactionDict')
+            entry: Union[Debit, Credit]) -> bool:
+        if isinstance(entry, Credit):
+            self.__add(entry=entry, entries=self.__credits)
+            return True
 
-        transactionKey: str = createTransactionKey(entry)
+        if isinstance(entry, Debit):
+            self.__add(entry=entry, entries=self.__debits)
+            return True
 
-        if transactionKey in self.getEntries():
-            entryType: str = entry.getType()
-            accountType: str = entry.getAccount().getType()
-            accountName: str = entry.getAccount().getName()
-            raise ValueError(f'{entryType} for {accountType} {accountName} is already recorded.')
+        raise TypeError('Only a Credit or Debit can be added to a Transaction')
 
-        self.__entries[transactionKey] = entry
+    def get_identifier(self) -> str:
+        return self.__identifier
 
-    def getCredits(self) -> OrderedDictType[str, Credit]:
-        return self.__getEntries(Credit)
+    def get_credits(self) -> List[Credit]:
+        return self.__credits
 
-    def getCreditBalance(self):
-        return self.__getBalance(Credit)
+    def get_debits(self) -> List[Debit]:
+        return self.__debits
 
-    def getDebits(self) -> OrderedDictType[str, Debit]:
-        return self.__getEntries(Debit)
+    def get_credit_balance(self) -> float:
+        return sum(credit.get_value() for credit in self.get_credits())
 
-    def getDebitBalance(self):
-        return self.__getBalance(Debit)
+    def get_debit_balance(self) -> float:
+        return sum(debit.get_value() for debit in self.get_debits())
 
-    def getEntries(self) -> OrderedDictType[str, acceptableTypes]:
-        return self.__entries
-
-    def isBalanced(self):
-        return self.getDebitBalance() == self.getCreditBalance()
+    def is_balanced(self) -> bool:
+        return self.get_debit_balance() == self.get_credit_balance()
