@@ -1,6 +1,8 @@
 # FinancialAccounting
 Financial Accounting with Python
 
+I've forgotten a lot of financial accounting, so I build this as I revisit the material.
+
 ## accounts
 - contains classes used to identify an account
 - `Account` is extended by three principal classes: `Asset`, `Liability`, and `Equity`
@@ -17,15 +19,18 @@ Financial Accounting with Python
 ```
  
  ## entries
- - contains classes used to make entries
- - `Entry` is extended by the two principal classes are `Debit` and `Credit`
-   - `account`: `Asset`, `Liability`, or `Equity`, which are extensions of `Account`
-   - `key`: a string identifier of the entry
-   - `values`: a positive `float` value representing the magnitude of the `Entry`
-   - `date`: a `datetime` object
-     - defaults to `datetime.now()` 
+ - contains classes used to make debit or credit entries
+ - `Entry` is extended by `Debit` and `Credit`
+   - `account`: `Asset`, `Liability`, or `Equity` (see [accounts](#accounts))
+   - `identifier`: a string identifier of the entry
+   - `currency`: the currency of the entry
+   - `value`: a `float` value representing the magnitude of the entry
+     - this must be positive
+   - `date`: a `datetime` object corresponding the the activity that resulting in the entry
+     - defaults to `datetime.utcnow()` 
+
 
 ## transactions
-- contains a class used to represent transactions
-- `createTransactionKey` is a method used to generate unique keys for entries in a transaction
-- `Transaction` is the class representing a transaction
+- `Transaction` a class representing a transaction
+  - there must be at least one debit and one credit
+  - the sum of the value of the debits must equal the sum of the value of credits

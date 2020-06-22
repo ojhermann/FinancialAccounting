@@ -2,87 +2,75 @@ import unittest
 from datetime import datetime
 
 from financial_accounting.main.accounts.account import Asset, Liability
-from financial_accounting.main.entries.entry import Debit, Credit
-
-key: str = 'key'
-value: float = 3.14
-date: datetime = datetime.now()
-
-debit: Debit = Debit(account=Asset, key=key, value=value, date=date)
-
-credit: Credit = Credit(account=Liability, key=key, value=value, date=date)
+from financial_accounting.main.entries.entry import Entry
 
 
-class TestDebit(unittest.TestCase):
-    def testItCanGetAccount(self):
-        self.assertEqual(
-            Asset,
-            debit.getAccount())
+class TestEntry(unittest.TestCase):
+    asset: Asset = Asset()
+    liability: Liability = Liability()
 
-    def testItCanGetDate(self):
-        self.assertEqual(
-            date,
-            debit.getDate())
+    now: datetime = datetime.utcnow()
+    later: datetime = datetime.utcnow()
 
-    def testItCanGetKey(self):
-        self.assertEqual(
-            key,
-            debit.getKey())
+    currency: str = 'USD'
 
-    def testItCanGetType(self):
-        self.assertEqual(
-            Debit.__name__,
-            debit.getType())
+    value: float = 1.0
 
-    def testItCanGetValue(self):
-        self.assertEqual(
-            value,
-            debit.getValue())
+    one_identifier: str = 'one'
+    two_identifier: str = 'two'
 
-    def testItCanRaiseValueError(self):
-        self.assertRaises(
-            ValueError,
-            Debit,
-            account=Asset,
-            key=key,
-            value=value * -1,
-            date=date)
+    one: Entry = Entry(account=asset,
+                       identifier=one_identifier,
+                       currency=currency,
+                       value=value,
+                       date=now)
+    two: Entry = Entry(account=liability,
+                       identifier=two_identifier,
+                       currency=currency,
+                       value=value,
+                       date=later)
 
+    def test_it_can_raise_value_error(self) -> None:
+        self.assertRaises(ValueError,
+                          Entry,
+                          TestEntry.asset,
+                          TestEntry.one_identifier,
+                          TestEntry.currency,
+                          TestEntry.value * -1,
+                          TestEntry.now)
 
-class TestCredit(unittest.TestCase):
-    def testItCanGetAccount(self):
-        self.assertEqual(
-            Liability,
-            credit.getAccount())
+    def test_it_can_get_account(self) -> None:
+        self.assertTrue(isinstance(TestEntry.one.get_account(), Asset))
+        self.assertTrue(isinstance(TestEntry.two.get_account(), Liability))
 
-    def testItCanGetDate(self):
-        self.assertEqual(
-            date,
-            credit.getDate())
+    def test_it_can_get_identifier(self) -> None:
+        self.assertEqual(TestEntry.one_identifier, TestEntry.one.get_identifier())
+        self.assertEqual(TestEntry.two_identifier, TestEntry.two.get_identifier())
 
-    def testItCanGetKey(self):
-        self.assertEqual(
-            key,
-            credit.getKey())
+    def test_it_can_get_currency(self) -> None:
+        self.assertEqual(TestEntry.currency, TestEntry.one.get_currency())
+        self.assertEqual(TestEntry.currency, TestEntry.two.get_currency())
 
-    def testItCanGetType(self):
-        self.assertEqual(
-            Credit.__name__,
-            credit.getType())
+    def test_it_can_get_date(self) -> None:
+        self.assertEqual(TestEntry.now, TestEntry.one.get_date())
+        self.assertEqual(TestEntry.later, TestEntry.two.get_date())
 
-    def testItCanGetValue(self):
-        self.assertEqual(
-            value,
-            credit.getValue())
+    def test_it_can_get_value(self) -> None:
+        self.assertEqual(TestEntry.value, TestEntry.one.get_value())
+        self.assertEqual(TestEntry.value, TestEntry.two.get_value())
 
-    def testItCanRaiseValueError(self):
-        self.assertRaises(
-            ValueError,
-            Credit,
-            account=Liability,
-            key=key,
-            value=value * -1,
-            date=date)
+    def test_lt_works(self) -> None:
+        self.assertTrue(TestEntry.one < TestEntry.two)
+
+    def test_gt_works(self) -> None:
+        self.assertTrue(TestEntry.two > TestEntry.one)
+
+    def test_eq_works(self) -> None:
+        self.assertEqual(TestEntry.one, Entry(account=TestEntry.asset,
+                                              identifier=TestEntry.one_identifier,
+                                              currency=TestEntry.currency,
+                                              value=TestEntry.value,
+                                              date=TestEntry.now))
 
 
 if __name__ == '__main__':
