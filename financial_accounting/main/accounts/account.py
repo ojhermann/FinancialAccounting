@@ -1,15 +1,18 @@
-class Account:
+class Account(object):
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}'
+        return self.__class__.__name__
 
+    def __str__(self) -> str:
+        return self.__repr__()
 
-class Asset(Account):
-    pass
+    @staticmethod
+    def is_asset() -> bool:
+        return False
 
+    @staticmethod
+    def is_liability() -> bool:
+        return False
 
-class Liability(Account):
-    pass
-
-
-class Equity(Account):
-    pass
+    @staticmethod
+    def is_equity() -> bool:
+        return False
