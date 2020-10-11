@@ -17,3 +17,7 @@ I've forgotten a lot of financial accounting, so I build this as I revisit the m
         class RetainedEarnings(Equity):
             pass
 ```
+
+## entries
+- contains classes used to model a bookkeeping entry
+- `Entry` is extended by two princiapl classes: `Debit` and `Credit`
