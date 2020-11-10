@@ -56,6 +56,29 @@ class TestTransaction(unittest.TestCase):
         transaction.add(credit_one)
         self.assertFalse(transaction.is_balanced())
 
+    def test_is_valid_works(self) -> None:
+        self.assertTrue(TestTransaction.transaction.is_valid())
+
+        identifier: Identifier = Identifier("This is the identifier")
+        transaction: Transaction = Transaction(identifier=identifier)
+        self.assertFalse(transaction.is_valid())
+        self.assertTrue(transaction.is_balanced())
+
+        debit_one: Debit = Debit(account_type=Asset, unit="USD", value=0, year=2020, month=11, day=10)
+        transaction.add(debit_one)
+        self.assertFalse(transaction.is_valid())
+        self.assertTrue(transaction.is_balanced())
+
+        credit_one: Credit = Credit(account_type=Liability, unit="USD", value=50, year=2020, month=11, day=10)
+        transaction.add(credit_one)
+        self.assertFalse(transaction.is_valid())
+        self.assertFalse(transaction.is_balanced())
+
+        debit_two: Debit = Debit(account_type=Asset, unit="USD", value=50, year=2020, month=11, day=10)
+        transaction.add(debit_two)
+        self.assertTrue(transaction.is_valid())
+        self.assertTrue(transaction.is_balanced())
+
     def test_it_will_raise_type_error_when_adding(self) -> None:
         identifier: Identifier = Identifier("This is the identifier")
         transaction: Transaction = Transaction(identifier=identifier)
