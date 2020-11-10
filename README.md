@@ -20,4 +20,9 @@ I've forgotten a lot of financial accounting, so I build this as I revisit the m
 
 ## entries
 - contains classes used to model a bookkeeping entry
-- `Entry` is extended by two princiapl classes: `Debit` and `Credit`
+- `Entry` is extended by two principal classes: `Debit` and `Credit`
+
+
+## transactions
+- contains classes used to model bookkeeping transactions
+- each `Transaction` object should contain a enough `Debit` and `Credit` objects to balance
