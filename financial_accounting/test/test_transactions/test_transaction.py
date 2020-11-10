@@ -88,3 +88,12 @@ class TestTransaction(unittest.TestCase):
         bogus_values: list = ["", "1", "2.0", 1, 10, 100, 1.0, 10.5, 35.67, entry]
         for bogus_value in bogus_values:
             self.assertRaises(TypeError, transaction.add, bogus_value)
+
+    def test_get_journal_entry(self) -> None:
+        line_one: str = "This is the identifier\n"
+        line_two: str = "Dr. Asset         	100\n"
+        line_three: str = "Dr. Asset         	100\n"
+        line_four: str = "	Cr. Liability     	100\n"
+        line_five: str = "	Cr. Liability     	100\n"
+        expected_text: str = line_one + line_two + line_three + line_four + line_five
+        self.assertEqual(TestTransaction.transaction.get_journal_entry(), expected_text)

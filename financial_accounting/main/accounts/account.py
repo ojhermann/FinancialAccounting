@@ -16,3 +16,7 @@ class Account(object):
     @staticmethod
     def is_equity() -> bool:
         return False
+
+    @classmethod
+    def get_name(cls) -> str:
+        return cls.__name__
