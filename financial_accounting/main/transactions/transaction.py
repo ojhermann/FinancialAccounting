@@ -42,3 +42,25 @@ class Transaction:
             return False
 
         return self.is_balanced()
+
+    def get_journal_entry(self) -> str:
+        entries: List[Union[Debit, Credit]] = self.get_debits() + self.get_credits()
+        max_width: int = max([len(entry.get_account().get_name()) for entry in entries]) + len("Dr. \t")
+
+        result: str = f'{self.get_identifier()}\n'
+
+        for debit in self.get_debits():
+            representation: str = f'Dr. {debit.get_account().get_name()}'
+            spaces: str = ' ' * (max_width - len(debit.get_account().get_name()))
+            representation += spaces
+            representation += f'\t{str(debit.get_value())}'
+            result += f'{representation}\n'
+
+        for credit in self.get_credits():
+            representation: str = f'\tCr. {credit.get_account().get_name()}'
+            spaces: str = ' ' * (max_width - len(credit.get_account().get_name()))
+            representation += spaces
+            representation += f'\t{str(credit.get_value())}'
+            result += f'{representation}\n'
+
+        return result
