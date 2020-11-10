@@ -25,4 +25,4 @@ I've forgotten a lot of financial accounting, so I build this as I revisit the m
 
 ## transactions
 - contains classes used to model bookkeeping transactions
-- each `Transaction` object should contain a enough `Debit` and `Credit` objects to balance
+- each `Transaction` object should contain enough `Debit` and `Credit` objects to balance
