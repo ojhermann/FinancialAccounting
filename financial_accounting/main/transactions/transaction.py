@@ -36,3 +36,9 @@ class Transaction:
 
     def is_balanced(self) -> bool:
         return self.get_debit_total_value() == self.get_credit_total_value()
+
+    def is_valid(self) -> bool:
+        if not self.__debits or not self.__credits:
+            return False
+
+        return self.is_balanced()
