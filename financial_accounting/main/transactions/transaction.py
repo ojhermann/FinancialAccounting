@@ -11,7 +11,7 @@ class Transaction:
         self.__debits: List[Debit] = list()
         self.__credits: List[Credit] = list()
 
-    def get_identifier(self) -> str:
+    def get_identifier(self) -> Identifier:
         return self.__id
 
     def add(self, entry: Union[Debit, Credit]) -> None:
