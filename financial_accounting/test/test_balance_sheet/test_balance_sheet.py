@@ -4,6 +4,7 @@ from financial_accounting.main.accounts.asset import Asset
 from financial_accounting.main.accounts.liability import Liability
 from financial_accounting.main.balance_sheet.balance_sheet import BalanceSheet
 from financial_accounting.main.balance_sheet.exceptions import DuplicateTransaction, InvalidTransaction
+from financial_accounting.main.entries.accounting_periods.accounting_periods import AccountingPeriods
 from financial_accounting.main.entries.credit import Credit
 from financial_accounting.main.entries.debit import Debit
 from financial_accounting.main.transactions.identifier import Identifier
@@ -18,8 +19,20 @@ class TestAddTransaction(unittest.TestCase):
             self.assertRaises(TypeError, balance_sheet.add_transaction, bogus_value)
 
     def test_it_will_raise_for_a_duplicate_transaction(self) -> None:
-        debit: Debit = Debit(account_type=Asset, unit="USD", value=100, year=2020, month=11, day=10)
-        credit: Credit = Credit(account_type=Liability, unit="USD", value=100, year=2020, month=11, day=10)
+        debit: Debit = Debit(account_type=Asset,
+                             unit="USD",
+                             value=100,
+                             year=2020,
+                             month=11,
+                             day=10,
+                             accounting_period=AccountingPeriods.Q2)
+        credit: Credit = Credit(account_type=Liability,
+                                unit="USD",
+                                value=100,
+                                year=2020,
+                                month=11,
+                                day=10,
+                                accounting_period=AccountingPeriods.Q2)
 
         identifier: Identifier = Identifier("This is the identifier")
 
@@ -42,8 +55,20 @@ class TestAddTransaction(unittest.TestCase):
         self.assertRaises(InvalidTransaction, balance_sheet.add_transaction, transaction)
 
     def test_it_works(self) -> None:
-        debit: Debit = Debit(account_type=Asset, unit="USD", value=100, year=2020, month=11, day=10)
-        credit: Credit = Credit(account_type=Liability, unit="USD", value=100, year=2020, month=11, day=10)
+        debit: Debit = Debit(account_type=Asset,
+                             unit="USD",
+                             value=100,
+                             year=2020,
+                             month=11,
+                             day=10,
+                             accounting_period=AccountingPeriods.Q2)
+        credit: Credit = Credit(account_type=Liability,
+                                unit="USD",
+                                value=100,
+                                year=2020,
+                                month=11,
+                                day=10,
+                                accounting_period=AccountingPeriods.Q2)
 
         identifier: Identifier = Identifier("This is the identifier")
 
