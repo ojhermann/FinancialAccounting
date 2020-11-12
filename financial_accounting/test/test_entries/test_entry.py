@@ -5,6 +5,7 @@ from typing import List
 from financial_accounting.main.accounts.asset import Asset
 from financial_accounting.main.accounts.equity import Equity
 from financial_accounting.main.accounts.liability import Liability
+from financial_accounting.main.entries.accounting_periods.accounting_periods import AccountingPeriods
 from financial_accounting.main.entries.entry import Entry
 
 
@@ -16,12 +17,27 @@ class TestEntry(unittest.TestCase):
     year: int = 2020
     month: int = 10
     day: int = 10
-    entry_asset: Entry = Entry(
-        account_type=Asset, unit=unit, value=asset_value, year=year, month=month, day=day)
-    entry_liability: Entry = Entry(
-        account_type=Liability, unit=unit, value=liability_value, year=year, month=month, day=day)
-    entry_equity: Entry = Entry(
-        account_type=Equity, unit=unit, value=equity_value, year=year, month=month, day=day)
+    entry_asset: Entry = Entry(account_type=Asset,
+                               unit=unit,
+                               value=asset_value,
+                               year=year,
+                               month=month,
+                               day=day,
+                               accounting_period=AccountingPeriods.Q1)
+    entry_liability: Entry = Entry(account_type=Liability,
+                                   unit=unit,
+                                   value=liability_value,
+                                   year=year,
+                                   month=month,
+                                   day=day,
+                                   accounting_period=AccountingPeriods.Q1)
+    entry_equity: Entry = Entry(account_type=Equity,
+                                unit=unit,
+                                value=equity_value,
+                                year=year,
+                                month=month,
+                                day=day,
+                                accounting_period=AccountingPeriods.Q1)
 
     @staticmethod
     def get_test_entries() -> List[Entry]:
@@ -49,7 +65,8 @@ class TestEntry(unittest.TestCase):
                 self.assertRaises(
                     TypeError,
                     Entry,
-                    account_type=account_type, unit="USD", value=value, year=2020, month=10, day=10)
+                    account_type=account_type, unit="USD", value=value, year=2020, month=10, day=10,
+                    accounting_period=AccountingPeriods.Q1)
 
     def test__get_value_will_raise_value_error_for_negative_ints(self) -> None:
         for value in [-100, -36, -1]:
@@ -61,7 +78,8 @@ class TestEntry(unittest.TestCase):
                 self.assertRaises(
                     ValueError,
                     Entry,
-                    account_type=account_type, unit="USD", value=value, year=2020, month=10, day=10)
+                    account_type=account_type, unit="USD", value=value, year=2020, month=10, day=10,
+                    accounting_period=AccountingPeriods.Q1)
 
     def test_is_debit_works(self) -> None:
         self.assertFalse(Entry.is_debit())
