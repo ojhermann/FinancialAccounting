@@ -2,14 +2,23 @@ from datetime import datetime
 from typing import Type
 
 from financial_accounting.main.accounts.account import Account
+from financial_accounting.main.entries.accounting_periods.accounting_periods import AccountingPeriod
 
 
 class Entry:
-    def __init__(self, account_type: Type[Account], unit: str, value: int, year: int, month: int, day: int):
+    def __init__(self,
+                 account_type: Type[Account],
+                 unit: str,
+                 value: int,
+                 year: int,
+                 month: int,
+                 day: int,
+                 accounting_period: AccountingPeriod):
         self.__account: Type[Account] = account_type
         self.__unit: str = unit
         self.__value: int = self._get_value(value)
         self.__date: datetime = datetime(year=year, month=month, day=day)
+        self.__accounting_period: AccountingPeriod = accounting_period
 
     def __repr__(self) -> str:
         return self.__class__.__name__
@@ -45,3 +54,6 @@ class Entry:
 
     def get_date(self) -> datetime:
         return self.__date
+
+    def get_accounting_period(self) -> AccountingPeriod:
+        return self.__accounting_period

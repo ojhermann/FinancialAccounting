@@ -2,6 +2,7 @@ import unittest
 
 from financial_accounting.main.accounts.asset import Asset
 from financial_accounting.main.accounts.liability import Liability
+from financial_accounting.main.entries.accounting_periods.accounting_periods import AccountingPeriods
 from financial_accounting.main.entries.credit import Credit
 from financial_accounting.main.entries.debit import Debit
 from financial_accounting.main.entries.entry import Entry
@@ -14,13 +15,37 @@ class TestTransaction(unittest.TestCase):
 
     transaction: Transaction = Transaction(identifier=identifier)
 
-    debit_one: Debit = Debit(account_type=Asset, unit="USD", value=100, year=2020, month=11, day=10)
-    debit_two: Debit = Debit(account_type=Asset, unit="USD", value=100, year=2020, month=11, day=10)
+    debit_one: Debit = Debit(account_type=Asset,
+                             unit="USD",
+                             value=100,
+                             year=2020,
+                             month=11,
+                             day=10,
+                             accounting_period=AccountingPeriods.Q1)
+    debit_two: Debit = Debit(account_type=Asset,
+                             unit="USD",
+                             value=100,
+                             year=2020,
+                             month=11,
+                             day=10,
+                             accounting_period=AccountingPeriods.Q1)
     transaction.add(debit_one)
     transaction.add(debit_two)
 
-    credit_one: Credit = Credit(account_type=Liability, unit="USD", value=100, year=2020, month=11, day=10)
-    credit_two: Credit = Credit(account_type=Liability, unit="USD", value=100, year=2020, month=11, day=10)
+    credit_one: Credit = Credit(account_type=Liability,
+                                unit="USD",
+                                value=100,
+                                year=2020,
+                                month=11,
+                                day=10,
+                                accounting_period=AccountingPeriods.Q1)
+    credit_two: Credit = Credit(account_type=Liability,
+                                unit="USD",
+                                value=100,
+                                year=2020,
+                                month=11,
+                                day=10,
+                                accounting_period=AccountingPeriods.Q1)
     transaction.add(credit_one)
     transaction.add(credit_two)
 
@@ -48,11 +73,23 @@ class TestTransaction(unittest.TestCase):
 
         identifier: Identifier = Identifier("This is the identifier")
         transaction: Transaction = Transaction(identifier=identifier)
-        debit_one: Debit = Debit(account_type=Asset, unit="USD", value=100, year=2020, month=11, day=10)
+        debit_one: Debit = Debit(account_type=Asset,
+                                 unit="USD",
+                                 value=100,
+                                 year=2020,
+                                 month=11,
+                                 day=10,
+                                 accounting_period=AccountingPeriods.Q1)
         transaction.add(debit_one)
         self.assertFalse(transaction.is_balanced())
 
-        credit_one: Credit = Credit(account_type=Liability, unit="USD", value=50, year=2020, month=11, day=10)
+        credit_one: Credit = Credit(account_type=Liability,
+                                    unit="USD",
+                                    value=50,
+                                    year=2020,
+                                    month=11,
+                                    day=10,
+                                    accounting_period=AccountingPeriods.Q1)
         transaction.add(credit_one)
         self.assertFalse(transaction.is_balanced())
 
@@ -64,17 +101,35 @@ class TestTransaction(unittest.TestCase):
         self.assertFalse(transaction.is_valid())
         self.assertTrue(transaction.is_balanced())
 
-        debit_one: Debit = Debit(account_type=Asset, unit="USD", value=0, year=2020, month=11, day=10)
+        debit_one: Debit = Debit(account_type=Asset,
+                                 unit="USD",
+                                 value=0,
+                                 year=2020,
+                                 month=11,
+                                 day=10,
+                                 accounting_period=AccountingPeriods.Q1)
         transaction.add(debit_one)
         self.assertFalse(transaction.is_valid())
         self.assertTrue(transaction.is_balanced())
 
-        credit_one: Credit = Credit(account_type=Liability, unit="USD", value=50, year=2020, month=11, day=10)
+        credit_one: Credit = Credit(account_type=Liability,
+                                    unit="USD",
+                                    value=50,
+                                    year=2020,
+                                    month=11,
+                                    day=10,
+                                    accounting_period=AccountingPeriods.Q1)
         transaction.add(credit_one)
         self.assertFalse(transaction.is_valid())
         self.assertFalse(transaction.is_balanced())
 
-        debit_two: Debit = Debit(account_type=Asset, unit="USD", value=50, year=2020, month=11, day=10)
+        debit_two: Debit = Debit(account_type=Asset,
+                                 unit="USD",
+                                 value=50,
+                                 year=2020,
+                                 month=11,
+                                 day=10,
+                                 accounting_period=AccountingPeriods.Q1)
         transaction.add(debit_two)
         self.assertTrue(transaction.is_valid())
         self.assertTrue(transaction.is_balanced())
@@ -83,7 +138,13 @@ class TestTransaction(unittest.TestCase):
         identifier: Identifier = Identifier("This is the identifier")
         transaction: Transaction = Transaction(identifier=identifier)
 
-        entry: Entry = Entry(account_type=Liability, unit="USD", value=50, year=2020, month=11, day=10)
+        entry: Entry = Entry(account_type=Liability,
+                             unit="USD",
+                             value=50,
+                             year=2020,
+                             month=11,
+                             day=10,
+                             accounting_period=AccountingPeriods.Q1)
 
         bogus_values: list = ["", "1", "2.0", 1, 10, 100, 1.0, 10.5, 35.67, entry]
         for bogus_value in bogus_values:
