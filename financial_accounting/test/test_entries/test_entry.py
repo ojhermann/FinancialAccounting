@@ -43,18 +43,6 @@ class TestEntry(unittest.TestCase):
     def get_test_entries() -> List[Entry]:
         return [TestEntry.entry_asset, TestEntry.entry_liability, TestEntry.entry_equity]
 
-    def test_repr_works(self) -> None:
-        for entry in TestEntry.get_test_entries():
-            self.assertEqual(
-                "Entry",
-                entry.__repr__())
-
-    def test_str_works(self) -> None:
-        for entry in TestEntry.get_test_entries():
-            self.assertEqual(
-                "Entry",
-                entry.__str__())
-
     def test__get_value_will_raise_type_error_for_non_ints(self) -> None:
         for value in [1.50, 0.0, "1.50", "0.0", "hello", None]:
             self.assertRaises(
