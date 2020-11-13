@@ -21,10 +21,10 @@ class Entry:
         self.__accounting_period: AccountingPeriod = accounting_period
 
     def __repr__(self) -> str:
-        return self.__class__.__name__
+        return str((self.__account, self.__unit, self.__value, self.__date, self.__accounting_period))
 
     def __str__(self) -> str:
-        return self.__repr__()
+        return str((self.__account, self.__unit, self.__value, self.__date, self.__accounting_period))
 
     @staticmethod
     def _get_value(value: int) -> int:
